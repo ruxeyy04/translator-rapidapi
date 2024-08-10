@@ -107,7 +107,6 @@ $('#addtorecord').click(function (e) {
         userid: userId, 
         source_lang: $('#sourceLanguage option:selected').text() + ": " + $('#sourceText').val().trim(),
         trans_lang: $('#targetLanguage option:selected').text() + ": " + $('#translatedText').val().trim(),
-        datetime: new Date().toISOString()
     };
     
     $.ajax({
@@ -133,7 +132,6 @@ $('#addtorecord').click(function (e) {
             });
         },
         complete: function () {
-            // Hide spinner and enable button when request is complete
             $addRecordButton.prop('disabled', false);
             $addRecordButton.find('.spinner-border').hide();
         }

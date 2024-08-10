@@ -1,4 +1,8 @@
 <?php 
+date_default_timezone_set('Asia/Manila');
+$dateTime = new DateTime();
+
+$timestamp = $dateTime->format('Y-m-d H:i:s');
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

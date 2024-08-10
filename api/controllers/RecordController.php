@@ -30,9 +30,11 @@ class RecordController {
     }
 
     public function addRecord($sourceLang, $transLang, $userId, $datetime) {
-        if ($sourceLang && $transLang && $userId && $datetime) {
+
+        global $timestamp; 
+        if ($sourceLang && $transLang && $userId) {
             $stmt = $this->conn->prepare("INSERT INTO translate_records (source_lang, trans_lang, userid, datetime) VALUES (?, ?, ?, ?)");
-            $stmt->bind_param("ssis", $sourceLang, $transLang, $userId, $datetime);
+            $stmt->bind_param("ssis", $sourceLang, $transLang, $userId, $timestamp);
     
             $result = $stmt->execute();
             $stmt->close();
@@ -41,5 +43,6 @@ class RecordController {
         }
         return false;
     }
+    
     
 }

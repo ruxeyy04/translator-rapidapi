@@ -1,6 +1,6 @@
 <?php
 require_once '../controllers/RecordController.php';
-
+require_once '../config.php'; // Include config.php to access the timestamp
 
 $controller = new RecordController($conn);
 
@@ -41,10 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $source_lang = $data['source_lang'] ?? null;
                 $trans_lang = $data['trans_lang'] ?? null;
                 $userid = $data['userid'] ?? null;
-                $datetime = $data['datetime'] ?? null;
 
-                if ($source_lang && $trans_lang && $userid && $datetime) {
-                    $result = $controller->addRecord($source_lang, $trans_lang, $userid, $datetime);
+                if ($source_lang && $trans_lang && $userid) {
+                    $result = $controller->addRecord($source_lang, $trans_lang, $userid, $timestamp); // Use the timestamp here
                     if ($result) {
                         echo json_encode(['success' => true, 'message' => 'Record added successfully']);
                     } else {
@@ -62,5 +61,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['success' => false, 'message' => 'Invalid request']);
     }
     header('Content-Type: application/json');
-
 }
