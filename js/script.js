@@ -99,6 +99,7 @@ $('#addtorecord').click(function (e) {
     $addRecordButton.find('.spinner-border').show();
 
     let data = {
+        action: 'add',
         userid: userId, 
         source_lang: $('#sourceLanguage option:selected').text() + ": " + $('#sourceText').val().trim(),
         trans_lang: $('#targetLanguage option:selected').text() + ": " + $('#translatedText').val().trim(),
