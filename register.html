@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+</head>
+
+<body>
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card" style="height: 500px;">
+                <div class="d-flex justify-content-center">
+                    <div class="brand_logo_container">
+                        <img src="https://static.vecteezy.com/system/resources/previews/005/567/686/original/translator-icon-logo-two-squares-and-arrow-translate-symbol-isolated-on-white-background-language-translation-icon-free-vector.jpg"
+                            class="brand_logo" alt="Logo">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center form_container">
+                    <form>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="fname" class="form-control input_user" placeholder="First Name" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="lname" class="form-control input_user" placeholder="Last Name" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="user" class="form-control input_user" placeholder="Username" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="text" name="email" class="form-control input_user" placeholder="Email" required>
+                        </div>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="pass" class="form-control input_pass"
+                                placeholder="Password" required>
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="button" name="button" class="btn login_btn" id="register_btn">Register</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links">
+                        Already have an account? <a href="/login.html" class="ml-2">Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="js/user.js"></script>
+</body>
+
+</html>

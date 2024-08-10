@@ -1,0 +1,1 @@
+window.env = {"RAPID_API_KEY":"218ba40fc2msh41af13f78e5c659p1e0d73jsn4a68783cb92a","RAPID_API_HOST":"google-translate113.p.rapidapi.com"};
