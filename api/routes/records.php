@@ -1,6 +1,6 @@
 <?php
 require_once '../controllers/RecordController.php';
-require_once '../config.php'; // Include config.php to access the timestamp
+require_once '../config.php'; 
 
 $controller = new RecordController($conn);
 
