@@ -3,7 +3,10 @@ var userId = $.cookie('userid');
 if (!userId) {
     window.location.href = 'login.html';
 }
-
+$('#logout_btn').click(function() {
+    $.removeCookie('userid');
+    window.location.href = 'login.html';
+});
 var table = $('#records_data').DataTable({
     ajax: {
         url: '/api/routes/records.php',

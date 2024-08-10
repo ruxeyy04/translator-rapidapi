@@ -3,6 +3,10 @@ var userId = $.cookie('userid');
 if (!userId) { 
     window.location.href = 'login.html';
 }
+$('#logout_btn').click(function() {
+    $.removeCookie('userid');
+    window.location.href = 'login.html';
+});
 document.querySelectorAll('.dropdown-toggle').forEach(item => {
     item.addEventListener('click', event => {
 
