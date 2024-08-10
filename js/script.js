@@ -59,6 +59,10 @@ $('#translate').click(function() {
         return;
     }
 
+    const $translateButton = $(this);
+    $translateButton.prop('disabled', true);
+    $translateButton.find('.spinner-border').show();
+
     const settings = {
         async: true,
         crossDomain: true,
@@ -81,5 +85,53 @@ $('#translate').click(function() {
         $('#translatedText').val(response.trans || "Translation not available");
     }).fail(function() {
         alert("An error occurred while translating. Please try again.");
+    }).always(function() {
+        $translateButton.prop('disabled', false);
+        $translateButton.find('.spinner-border').hide();
     });
+});
+
+$('#addtorecord').click(function (e) {
+    e.preventDefault();
+
+    const $addRecordButton = $(this);
+    $addRecordButton.prop('disabled', true);
+    $addRecordButton.find('.spinner-border').show();
+
+    let data = {
+        userid: userId, 
+        source_lang: $('#sourceLanguage option:selected').text() + ": " + $('#sourceText').val().trim(),
+        trans_lang: $('#targetLanguage option:selected').text() + ": " + $('#translatedText').val().trim(),
+        datetime: new Date().toISOString()
+    };
+    
+    $.ajax({
+        type: "POST",
+        url: "/api/routes/records.php",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        dataType: "json",
+        success: function (res) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Record added successfully!',
+                confirmButtonText: 'OK'
+            });
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An error occurred while adding the record.',
+                confirmButtonText: 'OK'
+            });
+        },
+        complete: function () {
+            // Hide spinner and enable button when request is complete
+            $addRecordButton.prop('disabled', false);
+            $addRecordButton.find('.spinner-border').hide();
+        }
+    });
+    
 });
