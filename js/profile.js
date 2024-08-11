@@ -1,6 +1,9 @@
 $(document).ready(function() {
     var userId = $.cookie('userid');
-
+    $('#logout_btn').click(function() {
+        $.removeCookie('userid');
+        window.location.href = 'login.html';
+    });
     if (!userId) {
         window.location.href = 'login.html';
     } else {

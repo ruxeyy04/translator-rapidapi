@@ -1,5 +1,5 @@
 <?php
-require_once '../controllers/UserController.php'; // Adjust path as needed
+require_once '../controllers/UserController.php'; 
 
 $controller = new UserController($conn);
 

@@ -44,47 +44,45 @@ class UserController
             return [
                 'success' => true,
                 'message' => 'Login successful!',
-                'userid' => $user['userid']
+                'userid' => $user['userid'],
+                'usertype' => $user['usertype']
             ];
         } else {
             return ['success' => false, 'message' => 'Invalid username or password.'];
         }
     }
-    public function updateProfile($fname, $lname, $username, $email) {
+    public function updateProfile($fname, $lname, $username, $email)
+    {
         if (empty($fname) || empty($lname) || empty($username) || empty($email)) {
             return [
                 'success' => false,
                 'message' => 'All fields are required.'
             ];
         }
-    
-        // Get the current user's ID
-        $userid = $_COOKIE['userid']; // Assumes user ID is stored in a cookie
-    
-        // Fetch the current username and email for this user
+
+        $userid = $_COOKIE['userid']; 
+
         $stmt = $this->conn->prepare('SELECT username, email FROM userinfo WHERE userid = ?');
         $stmt->bind_param('i', $userid);
         $stmt->execute();
         $result = $stmt->get_result();
         $user = $result->fetch_assoc();
-    
-        // Check if username or email is already taken by someone else
+
         $stmt = $this->conn->prepare('SELECT userid FROM userinfo WHERE (username = ? OR email = ?) AND userid != ?');
         $stmt->bind_param('ssi', $username, $email, $userid);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         if ($result->num_rows > 0) {
             return [
                 'success' => false,
                 'message' => 'Username or email is already taken.'
             ];
         }
-    
-        // Update user profile information
+
         $stmt = $this->conn->prepare('UPDATE userinfo SET fname = ?, lname = ?, username = ?, email = ? WHERE userid = ?');
         $stmt->bind_param('ssssi', $fname, $lname, $username, $email, $userid);
-    
+
         if ($stmt->execute()) {
             return [
                 'success' => true,
@@ -97,8 +95,103 @@ class UserController
             ];
         }
     }
-    
-    public function changePassword($oldPassword, $newPassword, $confirmPassword) {
+    public function fetchUsers()
+    {
+        $stmt = $this->conn->prepare('SELECT * FROM userinfo');
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $users = [];
+        while ($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+
+        return [
+            'success' => true,
+            'data' => $users
+        ];
+    }
+
+    public function fetchUser($userid)
+    {
+        $stmt = $this->conn->prepare('SELECT * FROM userinfo WHERE userid = ?');
+        $stmt->bind_param('i', $userid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return [
+                'success' => true,
+                'data' => $result->fetch_assoc()
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => 'User not found.'
+            ];
+        }
+    }
+    public function deleteUser($userid)
+    {
+        $stmt = $this->conn->prepare('DELETE FROM userinfo WHERE userid = ?');
+        $stmt->bind_param('i', $userid);
+
+        if ($stmt->execute()) {
+            return [
+                'success' => true,
+                'message' => 'User deleted successfully.'
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => 'Failed to delete user.'
+            ];
+        }
+    }
+    public function updateUser($userid, $fname, $lname, $username, $email, $newPassword = null)
+    {
+        if (empty($userid) || empty($fname) || empty($lname) || empty($username) || empty($email)) {
+            return [
+                'success' => false,
+                'message' => 'All fields except password are required.'
+            ];
+        }
+
+        $stmt = $this->conn->prepare('SELECT userid FROM userinfo WHERE (username = ? OR email = ?) AND userid != ?');
+        $stmt->bind_param('ssi', $username, $email, $userid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            return [
+                'success' => false,
+                'message' => 'Username or email is already taken by another user.'
+            ];
+        }
+
+        if ($newPassword) {
+            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+            $stmt = $this->conn->prepare('UPDATE userinfo SET fname = ?, lname = ?, username = ?, email = ?, password = ? WHERE userid = ?');
+            $stmt->bind_param('sssssi', $fname, $lname, $username, $email, $hashedPassword, $userid);
+        } else {
+            $stmt = $this->conn->prepare('UPDATE userinfo SET fname = ?, lname = ?, username = ?, email = ? WHERE userid = ?');
+            $stmt->bind_param('ssssi', $fname, $lname, $username, $email, $userid);
+        }
+
+        if ($stmt->execute()) {
+            return [
+                'success' => true,
+                'message' => 'User updated successfully.'
+            ];
+        } else {
+            return [
+                'success' => false,
+                'message' => 'Failed to update user.'
+            ];
+        }
+    }
+
+    public function changePassword($oldPassword, $newPassword, $confirmPassword)
+    {
 
         if (empty($oldPassword) || empty($newPassword) || empty($confirmPassword)) {
             return [
@@ -114,7 +207,7 @@ class UserController
             ];
         }
 
-        $userid = $_COOKIE['userid']; 
+        $userid = $_COOKIE['userid'];
         $stmt = $this->conn->prepare('SELECT password FROM userinfo WHERE userid = ?');
         $stmt->bind_param('i', $userid);
         $stmt->execute();
@@ -144,20 +237,21 @@ class UserController
             ];
         }
     }
-    public function getProfile($userid) {
-  
+    public function getProfile($userid)
+    {
+
         if (empty($userid)) {
             return [
                 'success' => false,
                 'message' => 'User ID is required.'
             ];
         }
-    
+
         $stmt = $this->conn->prepare('SELECT fname, lname, username, email FROM userinfo WHERE userid = ?');
         $stmt->bind_param('i', $userid);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             return [
@@ -171,5 +265,4 @@ class UserController
             ];
         }
     }
-    
 }

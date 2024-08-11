@@ -73,7 +73,12 @@ $("#login_form").submit(function(event) {
                     confirmButtonText: 'OK'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = '/index.html'; // Redirect after login
+                        if (response.usertype === 'admin') {
+                            window.location.href = '/adminindex.html'; 
+                        } else {
+                            window.location.href = '/index.html'; 
+                        }
+                        
                     }
                 });
             } else {
